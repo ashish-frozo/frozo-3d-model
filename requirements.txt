@@ -1,0 +1,25 @@
+# SV-SCN Requirements
+# All dependencies are license-clean (MIT/Apache-2.0/BSD)
+
+# Core ML
+torch>=2.0.0
+numpy>=1.24.0
+
+# Point Cloud / Mesh Processing
+open3d>=0.17.0
+trimesh>=4.0.0
+scipy>=1.10.0
+
+# Dataset
+objaverse>=0.1.7
+
+# Training
+tqdm>=4.65.0
+tensorboard>=2.14.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Utilities
+Pillow>=9.5.0
