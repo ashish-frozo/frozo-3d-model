@@ -296,18 +296,22 @@ def prepare_shapenet_dataset(
     return result
 
 
-def download_shapenet_sample(output_dir: Path) -> bool:
+def download_shapenet_sample(output_dir: Path, samples_per_category: int = 10) -> bool:
     """
     Download a sample of ShapeNet for testing.
     
     Note: Full ShapeNet requires registration at shapenet.org
     This downloads only publicly available sample data.
+    
+    Args:
+        output_dir: Where to save placeholder data
+        samples_per_category: Number of samples to generate per category
     """
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     
     logger.warning("Full ShapeNet requires registration at https://shapenet.org/")
-    logger.info("Creating synthetic placeholder data for pipeline testing...")
+    logger.info(f"Creating {samples_per_category} synthetic samples per category...")
     
     # Create placeholder data for testing
     for category in V1_CATEGORIES:
@@ -315,12 +319,13 @@ def download_shapenet_sample(output_dir: Path) -> bool:
         cat_dir.mkdir(exist_ok=True)
         
         # Create simple placeholder meshes
-        for i in range(10):
+        for i in range(samples_per_category):
             obj_content = create_placeholder_obj(category, i)
             obj_path = cat_dir / f"placeholder_{i:04d}.obj"
             obj_path.write_text(obj_content)
     
-    logger.info(f"Created placeholder data in {output_dir}")
+    total = samples_per_category * len(V1_CATEGORIES)
+    logger.info(f"Created {total} placeholder models in {output_dir}")
     logger.info("Replace with real ShapeNet data from shapenet.org")
     
     return True
@@ -409,7 +414,7 @@ def main():
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     
     if args.placeholder:
-        download_shapenet_sample(args.output_dir)
+        download_shapenet_sample(args.output_dir, args.samples_per_category)
         return
     
     # Find ShapeNet
